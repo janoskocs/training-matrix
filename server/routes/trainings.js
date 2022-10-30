@@ -1,4 +1,5 @@
 const express = require('express')
+const TrainingRecord = require('../models/trainingRecordModel')
 const router = express.Router()
 
 //GET all trainings
@@ -12,8 +13,15 @@ router.get('/:id', (req, res) => {
 })
 
 //POST a single training
-router.post('/', (req, res) => {
-    res.json({ mssg: 'POST a new training' })
+router.post('/', async (req, res) => {
+    const { name, trainingTitle, trainingDate } = req.body
+
+    try {
+        const trainingRecord = await TrainingRecord.create({ name, trainingTitle, trainingDate })
+        res.status(200).json(trainingRecord)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
 })
 
 //DELETE a single training
