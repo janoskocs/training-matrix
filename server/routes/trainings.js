@@ -1,37 +1,28 @@
 const express = require('express')
-const TrainingRecord = require('../models/trainingRecordModel')
+
+const {
+    createTrainingRecord,
+    getTrainingRecord,
+    getAllTrainingRecords,
+    deleteTrainingRecord,
+    updateTrainingRecord
+} = require('../controllers/trainingRecordController')
+
 const router = express.Router()
 
 //GET all trainings
-router.get('/', (req, res) => {
-    res.json({ mssg: 'GET all trainings' })
-})
+router.get('/', getAllTrainingRecords)
 
 //GET a single training
-router.get('/:id', (req, res) => {
-    res.json({ mssg: 'GET a single training' })
-})
+router.get('/:id', getTrainingRecord)
 
 //POST a single training
-router.post('/', async (req, res) => {
-    const { name, trainingTitle, trainingDate } = req.body
-
-    try {
-        const trainingRecord = await TrainingRecord.create({ name, trainingTitle, trainingDate })
-        res.status(200).json(trainingRecord)
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
-})
+router.post('/', createTrainingRecord)
 
 //DELETE a single training
-router.delete('/:id', (req, res) => {
-    res.json({ mssg: 'DELETE a training' })
-})
+router.delete('/:id', deleteTrainingRecord)
 
 //PATCH a single training
-router.patch('/:id', (req, res) => {
-    res.json({ mssg: 'PATCH a training' })
-})
+router.patch('/:id', updateTrainingRecord)
 
 module.exports = router
